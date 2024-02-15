@@ -1,6 +1,6 @@
 """
 Student Name: Dawei Zhu - 14613428
-Student Email: <EMAIL>
+Student Email: dawei.zhu@my.jcu.edu.au
 """
 MENU = """(G)et a valid score (must be 0-100 inclusive)
 (P)rint result (copy or import your function to determine the result from score.py)
