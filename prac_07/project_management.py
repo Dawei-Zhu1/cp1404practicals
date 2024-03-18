@@ -33,22 +33,31 @@ def main():
             pass
         if menu_choice == 'u':
             # Display projects with index:
-            for index, project in enumerate(projects['Incomplete']):
+            incomplete_project = projects['Incomplete']
+            for index, project in enumerate(incomplete_project):
                 print(index, project)
+            project_choice = get_valid_ranged_number(
+                end=len(projects['Incomplete']),
+                prompt='Project Choice: '
+            )
+            chosen_project = incomplete_project[project_choice]
+            print(chosen_project)
+            new_percentage = get_valid_ranged_number(end=101, prompt='New Percentage:')
+            new_priority = get_valid_ranged_number(end=11, prompt='New Priority:')
+            chosen_project.completion_percentage = new_percentage
+            chosen_project.priority = new_priority
 
-            project_choice = get_valid_project_choice(len(projects['Incomplete']))
         print(MENU)
         menu_choice = input('>>> ').strip().lower()
     # Quit
     print('Thank you for using custom-built project management software.')
 
 
-def get_valid_project_choice(valid_range):
+def get_valid_ranged_number(start=0, end=100, prompt='>>> '):
     """To avoid unwanted choice, return valid project choice"""
-    project_choice = get_valid_number('Project Choice: ')
-    print(project_choice, range(valid_range))
-    while project_choice not in range(valid_range):
-        print('Invalid choice, out of range.')
+    project_choice = get_valid_number(prompt)
+    while project_choice not in range(start, end):
+        print('Invalid, out of range.')
         project_choice = get_valid_number('Project Choice: ')
     return project_choice
 
