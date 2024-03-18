@@ -2,7 +2,7 @@ from guitar import Guitar
 
 FILENAME = 'guitars.csv'
 TAB_SPACES_NUMBER = 4
-MENU="""
+MENU = """
 MENU
 (D)isplay my guitars
 (A)dd a guitar
@@ -30,6 +30,18 @@ def main():
             print('Invalid option')
         choice = input('>>> ').strip().lower()
 
+    is_user_want_to_save = input(f'Do you want to save guitar info to {FILENAME}? (Y/n)').strip().lower()
+    if is_user_want_to_save == 'y':
+        print(f'Saving guitars to {FILENAME}...')
+        with open(FILENAME, 'w') as f:
+            for guitar in guitars:
+                output = ''.join([guitar.name, guitar.year, guitar.cost])
+                f.write(output)
+        print('Done')
+    else:
+        print('Guitars are not saved')
+
+    print('Have a nice day!')
 
 
 def get_guitars(filename):
@@ -48,14 +60,16 @@ def get_guitars(filename):
             guitar = Guitar(name, year, cost)
             guitar_list.append(guitar)
     return guitar_list
+
+
 def get_new_guitar():
-    guitar_name = get_guitar_name()
-    year_bought = int(input('Year bought: '))
-    cost = float(input('Cost: '))
+    guitar_name = get_valid_text()
+    year_bought = get_valid_number('Year: ')
+    cost = get_valid_number('Cost: ', 'float')
     return Guitar(guitar_name, year_bought, cost)
 
 
-def get_guitar_name():
+def get_valid_text():
     """Return valid guitar name"""
     guitar_name = input('Guitar name: ').strip()
     while not len(guitar_name):
@@ -64,13 +78,19 @@ def get_guitar_name():
     return guitar_name
 
 
-def get_valid_number(prompt):
+def get_valid_number(prompt, number_type='int'):
     """Return valid float number"""
+    number_type = number_type.strip().lower()
     is_valid = False
     number = None
     while not is_valid:
         try:
-            number = float(input(prompt))
+            # Type selection
+            if number_type == 'float':
+                number = float(input(prompt))
+            elif number_type == 'int':
+                number = int(input(prompt))
+
             if number < 0:
                 print('Number must be greater than 0')
             else:
@@ -78,7 +98,6 @@ def get_valid_number(prompt):
         except ValueError:
             print('Invalid! Must input a valid number')
     return number
-
 
 
 def display_guitars(guitar_list):
