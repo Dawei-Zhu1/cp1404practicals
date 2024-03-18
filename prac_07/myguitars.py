@@ -35,7 +35,7 @@ def main():
         print(f'Saving guitars to {FILENAME}...')
         with open(FILENAME, 'w') as f:
             for guitar in guitars:
-                output = ''.join([guitar.name, str(guitar.year), str(guitar.cost)])
+                output = ','.join([guitar.name, str(guitar.year), str(guitar.cost)])
                 f.write(output + '\n')
         print('Done')
     else:
