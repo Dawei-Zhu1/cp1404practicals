@@ -2,6 +2,12 @@ from guitar import Guitar
 
 FILENAME = 'guitars.csv'
 TAB_SPACES_NUMBER = 4
+MENU="""
+MENU
+(D)isplay my guitars
+(A)dd a guitar
+(Q)uit
+"""
 
 
 def main():
@@ -10,6 +16,20 @@ def main():
     guitars = get_guitars(FILENAME)
     guitars.sort()
     display_guitars(guitars)
+    print(MENU)
+    choice = input('>>> ').strip().lower()
+    while choice != 'q':
+        if choice == 'd':
+            display_guitars(guitars)
+            print()
+        elif choice == 'a':
+            new_guitar = get_new_guitar()
+            guitars.append(new_guitar)
+            print(f'{new_guitar} has been added to my guitar list.')
+        else:
+            print('Invalid option')
+        choice = input('>>> ').strip().lower()
+
 
 
 def get_guitars(filename):
@@ -28,6 +48,37 @@ def get_guitars(filename):
             guitar = Guitar(name, year, cost)
             guitar_list.append(guitar)
     return guitar_list
+def get_new_guitar():
+    guitar_name = get_guitar_name()
+    year_bought = int(input('Year bought: '))
+    cost = float(input('Cost: '))
+    return Guitar(guitar_name, year_bought, cost)
+
+
+def get_guitar_name():
+    """Return valid guitar name"""
+    guitar_name = input('Guitar name: ').strip()
+    while not len(guitar_name):
+        print('Guitar name cannot be empty!')
+        guitar_name = input('Guitar name: ').strip()
+    return guitar_name
+
+
+def get_valid_number(prompt):
+    """Return valid float number"""
+    is_valid = False
+    number = None
+    while not is_valid:
+        try:
+            number = float(input(prompt))
+            if number < 0:
+                print('Number must be greater than 0')
+            else:
+                is_valid = True
+        except ValueError:
+            print('Invalid! Must input a valid number')
+    return number
+
 
 
 def display_guitars(guitar_list):
