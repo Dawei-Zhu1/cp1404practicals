@@ -6,6 +6,9 @@ class Project:
         self.cost_estimate = cost_estimate
         self.completion_percentage = completion_percentage
 
+    def is_completed(self):
+        return self.completion_percentage == 100
+
     def __repr__(self):
         return f'{self} - {self.name} - {self.start_date}'
 
