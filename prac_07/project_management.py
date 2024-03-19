@@ -19,9 +19,12 @@ def main():
     menu_choice = input('>>> ').strip().lower()
     while menu_choice != 'q':
         if menu_choice == 'l':
-            pass
+            filename = get_valid_text('Enter a filename to read the projects: ')
+            projects = load_projects(filename)
         if menu_choice == 's':
-            pass
+            filename_for_saving = get_valid_text('Enter a filename to save the projects: ')
+            save_projects(projects, filename_for_saving)
+            print(f'Project saved as {filename_for_saving} successfully!')
         if menu_choice == 'd':
             categorized_projects = categorize_projects(projects)
             print('Incomplete projects: ')
@@ -181,6 +184,7 @@ def get_valid_priority(prompt, allow_empty=False):
 
 
 def load_projects(filename):
+    """Read the original file and return python objects in list"""
     with open(filename, 'r') as f:
         projects = []
         # Skip the titles
@@ -196,6 +200,13 @@ def load_projects(filename):
             project = Project(project_name, start_date, priority, cost_estimate, completion_percentage)
             projects.append(project)
     return projects
+
+
+def save_projects(data, filename):
+    """Write project to file"""
+    with open(filename, 'w') as f:
+        for project in data:
+            print(project, file=f)
 
 
 if __name__ == '__main__':
