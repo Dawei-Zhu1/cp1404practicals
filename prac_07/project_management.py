@@ -67,11 +67,8 @@ def main():
             new_percentage = get_valid_percentage('New Percentage: ', allow_empty=True)
             new_priority = get_valid_priority('New Priority: ', allow_empty=True)
             # Apply changes when inputs are detected
-            if new_priority:
-                chosen_project.priority = new_priority
-            if new_percentage:
-                chosen_project.completion_percentage = new_percentage
-            print(new_priority, new_percentage)
+            chosen_project.update_completion_percentage(new_percentage)
+            chosen_project.update_completion_priority(new_priority)
 
         print(MENU)
         menu_choice = input('>>> ').strip().lower()

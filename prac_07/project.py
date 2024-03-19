@@ -9,6 +9,14 @@ class Project:
     def is_completed(self):
         return self.completion_percentage == 100
 
+    def update_completion_percentage(self, new_percentage):
+        if new_percentage is not None:
+            self.completion_percentage = new_percentage
+
+    def update_completion_priority(self, new_priority):
+        if new_priority is not None:
+            self.completion_percentage = new_priority
+
     def __repr__(self):
         return f'{self} - {self.name} - {self.start_date}'
 
