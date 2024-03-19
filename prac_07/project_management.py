@@ -38,14 +38,22 @@ def main():
             project_name = get_valid_text('Name: ')
             project_start_date = get_valid_date('Start date (dd/mm/yyyy): ')
             project_priority = get_valid_priority('Priority: ')
-            project_cost_estimate = get_valid_text('Cost estimate: ')
+            project_cost_estimate = get_valid_number('Cost estimate: ', )
             project_percentage = get_valid_percentage('Completion percentage: ')
+            new_project = Project(
+                project_name,
+                project_start_date,
+                project_priority,
+                project_cost_estimate,
+                project_percentage
+            )
+            projects.append(new_project)
 
         if menu_choice == 'u':
             # Display projects with index:
             for index, project in enumerate(projects):
                 print(index, project)
-            project_choice = get_valid_number(
+            project_choice = get_ranged_number(
                 0,
                 len(projects) - 1,
                 'Project Choice: '
@@ -84,16 +92,6 @@ def categorize_projects(projects):
     return [incomplete_projects, completed_projects]
 
 
-def get_valid_percentage(prompt, allow_empty=False):
-    """Get number in percent format."""
-    return get_valid_number(0, 100, prompt, 'int', allow_empty)
-
-
-def get_valid_priority(prompt, allow_empty=False):
-    """Return number in priority format."""
-    return get_valid_number(1, 10, prompt, 'int', allow_empty)
-
-
 def get_valid_date(prompt):
     """Return valid date format."""
     date = None
@@ -123,7 +121,7 @@ def get_valid_text(prompt):
     return text
 
 
-def get_valid_number(start, end, prompt, number_type='int', allow_empty=False):
+def get_valid_number(prompt, number_type='int', allow_empty=False):
     """Return valid number"""
     number_type = number_type.strip().lower()
     is_valid = False
@@ -138,16 +136,44 @@ def get_valid_number(start, end, prompt, number_type='int', allow_empty=False):
                 number = float(number)
             elif number_type == 'int':
                 number = int(number)
-            # Range
-            if number < start:
-                print(f'Number must be >= than {start}')
-            elif number > end:
-                print(f'Number must be <= {end}')
             else:
                 is_valid = True
         except ValueError:
             print('Invalid! Must input a valid number')
     return number
+
+
+def get_ranged_number(start, end, prompt, number_type='int', allow_empty=False):
+    """
+    Inherit from get_number, add the range feature
+    :param start: start of range
+    :param end: end of range
+    :param prompt: str
+    :param number_type: 'int', 'float'
+    :param allow_empty: bool
+    :return: number
+    """
+    is_valid = False
+    number = None
+    while not is_valid:
+        number = get_valid_number(prompt, number_type, allow_empty=allow_empty)
+        if number < start:
+            print(f'Number must be >= than {start}')
+        elif number > end:
+            print(f'Number must be <= {end}')
+        else:
+            is_valid = True
+    return number
+
+
+def get_valid_percentage(prompt, allow_empty=False):
+    """Get number in percent format."""
+    return get_ranged_number(0, 100, prompt, 'int', allow_empty)
+
+
+def get_valid_priority(prompt, allow_empty=False):
+    """Return number in priority format."""
+    return get_ranged_number(1, 10, prompt, 'int', allow_empty)
 
 
 def load_projects(filename):
