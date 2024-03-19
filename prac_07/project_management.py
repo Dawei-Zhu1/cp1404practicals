@@ -1,3 +1,4 @@
+import datetime
 from project import Project
 
 FILENAME = 'projects.txt'
@@ -32,12 +33,11 @@ def main():
         if menu_choice == 'a':
             print("Let's add a new project")
             project_name = get_valid_text('Name: ')
-            project_start_date = get_valid_text('Start date (dd/mm/yy): ')
+            project_start_date = get_valid_date('Start date (dd/mm/yyyy): ')
             project_priority = get_valid_priority('Priority: ')
             project_cost_estimate = get_valid_text('Cost estimate: ')
             project_percentage = get_valid_percentage('Completion percentage: ')
 
-            print()
         if menu_choice == 'u':
             # Display projects with index:
             incomplete_project = projects['Incomplete']
@@ -51,13 +51,14 @@ def main():
             chosen_project = incomplete_project[project_choice]
             print(chosen_project)
             # Ask for new inputs
-            new_percentage = get_valid_percentage('New Percentage: ')
-            new_priority = get_valid_priority('New Priority: ')
+            new_percentage = get_valid_percentage('New Percentage: ', allow_empty=True)
+            new_priority = get_valid_priority('New Priority: ', allow_empty=True)
             # Apply changes when inputs are detected
             if new_priority:
                 chosen_project.priority = new_priority
             if new_percentage:
                 chosen_project.completion_percentage = new_percentage
+            print(new_priority, new_percentage)
 
         print(MENU)
         menu_choice = input('>>> ').strip().lower()
@@ -65,15 +66,39 @@ def main():
     print('Thank you for using custom-built project management software.')
 
 
-def get_valid_percentage(prompt):
-    return get_valid_number(0, 100, prompt, 'int', True)
+def get_valid_percentage(prompt, allow_empty=False):
+    """Get number in percent format."""
+    return get_valid_number(0, 100, prompt, 'int', allow_empty)
 
 
-def get_valid_priority(prompt):
-    return get_valid_number(0, 10, prompt, 'int', True)
+def get_valid_priority(prompt, allow_empty=False):
+    """Return number in priority format."""
+    return get_valid_number(1, 10, prompt, 'int', allow_empty)
+
+
+def get_valid_date(prompt):
+    """Return valid date format."""
+    date = None
+    is_valid = False
+    while not is_valid:
+        try:
+            date = get_valid_text(prompt)
+            date_parts = date.split('/')
+            if len(date_parts) == 3:
+                day, month, year = [int(date_particle) for date_particle in date_parts]
+                date = datetime.date(year, month, day)
+                print(date.strftime('%Y %m %d'))
+                is_valid = True
+            else:
+                print('Invalid date format.')
+        except ValueError:
+            print('Invalid date. Try again.')
+
+    return date
 
 
 def get_valid_text(prompt):
+    """Return text in proper format."""
     text = input(prompt).strip()
     while text == '':
         print('Input cannot be empty')
