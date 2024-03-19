@@ -23,10 +23,13 @@ def main():
         if menu_choice == 's':
             pass
         if menu_choice == 'd':
-            for category in projects:
-                print(f'{category}:')
-                for project in projects[category]:
-                    print(f'  {project}')
+            categorized_projects = categorize_projects(projects)
+            print('Incomplete projects: ')
+            for i in categorized_projects[0]:
+                print(f'  {i}')
+            print('Completed projects: ')
+            for i in categorized_projects[1]:
+                print(f'  {i}')
 
         if menu_choice == 'f':
             pass
@@ -40,15 +43,14 @@ def main():
 
         if menu_choice == 'u':
             # Display projects with index:
-            incomplete_project = projects['Incomplete']
-            for index, project in enumerate(incomplete_project):
+            for index, project in enumerate(projects):
                 print(index, project)
             project_choice = get_valid_number(
                 0,
-                len(projects['Incomplete']) - 1,
+                len(projects) - 1,
                 'Project Choice: '
             )
-            chosen_project = incomplete_project[project_choice]
+            chosen_project = projects[project_choice]
             print(chosen_project)
             # Ask for new inputs
             new_percentage = get_valid_percentage('New Percentage: ', allow_empty=True)
@@ -64,6 +66,22 @@ def main():
         menu_choice = input('>>> ').strip().lower()
     # Quit
     print('Thank you for using custom-built project management software.')
+
+
+def categorize_projects(projects):
+    """
+    Return a list contains 2 lists
+    0. InCompleted
+    1. Completed
+    """
+    completed_projects = []
+    incomplete_projects = []
+    for i in projects:
+        if i.is_completed():
+            completed_projects.append(i)
+        else:
+            incomplete_projects.append(i)
+    return [incomplete_projects, completed_projects]
 
 
 def get_valid_percentage(prompt, allow_empty=False):
@@ -87,10 +105,9 @@ def get_valid_date(prompt):
             if len(date_parts) == 3:
                 day, month, year = [int(date_particle) for date_particle in date_parts]
                 date = datetime.date(year, month, day)
-                print(date.strftime('%Y %m %d'))
                 is_valid = True
             else:
-                print('Invalid date format.')
+                print('Bad date format. Use / for separation.')
         except ValueError:
             print('Invalid date. Try again.')
 
@@ -121,7 +138,7 @@ def get_valid_number(start, end, prompt, number_type='int', allow_empty=False):
                 number = float(number)
             elif number_type == 'int':
                 number = int(number)
-
+            # Range
             if number < start:
                 print(f'Number must be >= than {start}')
             elif number > end:
@@ -135,7 +152,7 @@ def get_valid_number(start, end, prompt, number_type='int', allow_empty=False):
 
 def load_projects(filename):
     with open(filename, 'r') as f:
-        categorized_projects = {'Incomplete': [], 'Completed': []}
+        projects = []
         # Skip the titles
         f.readline()
         # Process contents
@@ -147,11 +164,8 @@ def load_projects(filename):
             cost_estimate = float(parts[3])
             completion_percentage = int(parts[4])
             project = Project(project_name, start_date, priority, cost_estimate, completion_percentage)
-            if completion_percentage == 100:
-                categorized_projects['Completed'].append(project)
-            else:
-                categorized_projects['Incomplete'].append(project)
-    return categorized_projects
+            projects.append(project)
+    return projects
 
 
 if __name__ == '__main__':
