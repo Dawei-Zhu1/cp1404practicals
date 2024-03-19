@@ -109,7 +109,7 @@ def get_valid_date(prompt):
         except ValueError:
             print('Invalid date. Try again.')
 
-    return date
+    return date.strftime('%d/%m/%Y')
 
 
 def get_valid_text(prompt):
@@ -202,8 +202,24 @@ def load_projects(filename):
 def save_projects(data, filename):
     """Write project to file"""
     with open(filename, 'w') as f:
+        f.write('\t'.join(
+            [
+                'Name',
+                'Start Date',
+                'Priority',
+                'Cost Estimate',
+                'Completion Percentage'
+            ]
+        ) + '\n')
         for project in data:
-            print(project, file=f)
+            output = '\t'.join([
+                project.name,
+                project.start_date,
+                str(project.priority),
+                str(project.cost_estimate),
+                str(project.completion_percentage)
+            ])
+            f.write(output + '\n')
 
 
 if __name__ == '__main__':
