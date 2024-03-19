@@ -136,8 +136,8 @@ def get_valid_number(prompt, number_type='int', allow_empty=False):
                 number = float(number)
             elif number_type == 'int':
                 number = int(number)
-            else:
-                is_valid = True
+
+            is_valid = True
         except ValueError:
             print('Invalid! Must input a valid number')
     return number
@@ -157,6 +157,10 @@ def get_ranged_number(start, end, prompt, number_type='int', allow_empty=False):
     number = None
     while not is_valid:
         number = get_valid_number(prompt, number_type, allow_empty=allow_empty)
+        # Case Allowing empty, confirmed by parent function
+        if number is None:
+            return number
+        # Case Not allowing empty
         if number < start:
             print(f'Number must be >= than {start}')
         elif number > end:
