@@ -19,13 +19,16 @@ def main():
     menu_choice = input('>>> ').strip().lower()
     while menu_choice != 'q':
         if menu_choice == 'l':
+            # Load projects
             filename = get_valid_text('Enter a filename to read the projects: ')
             projects = load_projects(filename)
         if menu_choice == 's':
+            # Save projects
             filename_for_saving = get_valid_text('Enter a filename to save the projects: ')
             save_projects(projects, filename_for_saving)
             print(f'Project saved as {filename_for_saving} successfully!')
         if menu_choice == 'd':
+            # Display projects
             categorized_projects = categorize_projects(projects)
             print('Incomplete projects: ')
             for i in categorized_projects[0]:
@@ -35,8 +38,10 @@ def main():
                 print(f'  {i}')
 
         if menu_choice == 'f':
+            # Filter later projects by date
             pass
         if menu_choice == 'a':
+            # Add projects
             print("Let's add a new project")
             project_name = get_valid_text('Name: ')
             project_start_date = get_valid_date('Start date (dd/mm/yyyy): ')
@@ -53,13 +58,14 @@ def main():
             projects.append(new_project)
 
         if menu_choice == 'u':
-            # Display projects with index:
+            # Update current projects
             for index, project in enumerate(projects):
+                # Display projects with index
                 print(index, project)
+            # Limit the range of choice
+            max_range = len(projects) - 1
             project_choice = get_ranged_number(
-                0,
-                len(projects) - 1,
-                'Project Choice: '
+                0, max_range,'Project Choice: '
             )
             chosen_project = projects[project_choice]
             print(chosen_project)
@@ -68,7 +74,7 @@ def main():
             new_priority = get_valid_priority('New Priority: ', allow_empty=True)
             # Apply changes when inputs are detected
             chosen_project.update_completion_percentage(new_percentage)
-            chosen_project.update_completion_priority(new_priority)
+            chosen_project.update_priority(new_priority)
 
         print(MENU)
         menu_choice = input('>>> ').strip().lower()
@@ -227,7 +233,7 @@ def save_projects(data, filename):
                 project.name,
                 project.start_date,
                 str(project.priority),
-                str(project.cost_estimate),
+                project.date_to_string(),
                 str(project.completion_percentage)
             ])
             f.write(output + '\n')
