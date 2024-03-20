@@ -25,10 +25,7 @@ First appeared in {self.year}'
 
     def __repr__(self):
         """Return string representation of a ProgrammingLanguage."""
-        return f'{self.name}, \
-{self.typing} Typing, Reflection={self.reflection}, \
-has_pointer_arithmetic={self.has_pointer}, \
-First appeared in {self.year}'
+        return f'<{self.name}>'
 
     def is_dynamic(self):
         """Determine if language is dynamically typed."""
