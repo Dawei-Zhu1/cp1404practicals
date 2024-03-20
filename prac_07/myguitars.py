@@ -21,13 +21,13 @@ def main():
     while choice != 'q':
         if choice == 'd':
             display_guitars(guitars)
-            print()
         elif choice == 'a':
             new_guitar = get_new_guitar()
             guitars.append(new_guitar)
             print(f'{new_guitar} has been added to my guitar list.')
         else:
             print('Invalid option')
+        print(MENU)
         choice = input('>>> ').strip().lower()
 
     is_user_want_to_save = input(f'Do you want to save guitar info to {FILENAME}? (Y/n)').strip().lower()
