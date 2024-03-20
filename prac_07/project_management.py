@@ -219,6 +219,7 @@ def load_projects(filename):
             completion_percentage = int(parts[4])
             project = Project(project_name, start_date, priority, cost_estimate, completion_percentage)
             projects.append(project)
+        projects.sort()
     return projects
 
 
