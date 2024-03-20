@@ -39,7 +39,10 @@ def main():
 
         if menu_choice == 'f':
             # Filter later projects by date
-            pass
+            date_for_filtering = get_valid_date('Enter a date: ')
+            filtered_projects = [project for project in projects if project.start_date > date_for_filtering]
+            for i in filtered_projects:
+                print(i)
         if menu_choice == 'a':
             # Add projects
             print("Let's add a new project")
@@ -177,7 +180,7 @@ def get_ranged_number(start, end, prompt, number_type='int', allow_empty=False):
         # Case Allowing empty, confirmed by parent function
         if number is None:
             return number
-        # Case Not allowing empty
+        # Case Not allowing empty, if out of range
         if number < start:
             print(f'Number must be >= than {start}')
         elif number > end:
