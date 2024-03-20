@@ -27,7 +27,7 @@ for x in range(2):
         print(f'{x} * {y} = {true_value}')
 ```
 
-## Relative links
+## Useful links
 
 - [Programming Pattern](https://github.com/CP1404/Starter/wiki/Programming-Patterns#while-loops-indefinite-iteration)
 - [CP1404 Programming Instruction](https://github.com/CP1404/Starter)
