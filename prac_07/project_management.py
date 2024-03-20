@@ -31,7 +31,9 @@ def main():
 
         if menu_choice == 'd':
             # Display projects
-            categorized_projects = categorize_projects(projects)
+            projects_displayed = projects.copy()
+            projects_displayed.sort()
+            categorized_projects = categorize_projects(projects_displayed)
             print('Incomplete projects: ')
             for i in categorized_projects[0]:
                 print(f'  {i}')
@@ -42,17 +44,18 @@ def main():
         if menu_choice == 'f':
             # Filter later projects by date
             date_for_filtering = get_valid_date('Enter a date: ')
-            filtered_projects = [project for project in projects if project.start_date > date_for_filtering]
+            filtered_projects = [project for project in projects if project.start_date >= date_for_filtering]
+            filtered_projects.sort(key=sort_by_date)
             for i in filtered_projects:
                 print(i)
 
         if menu_choice == 'a':
-            # Add projects
+            # Add projects, modification involved
             print("Let's add a new project")
             project_name = get_valid_text('Name: ')
             project_start_date = get_valid_date('Start date (dd/mm/yyyy): ')
             project_priority = get_valid_priority('Priority: ')
-            project_cost_estimate = get_valid_number('Cost estimate: ', )
+            project_cost_estimate = get_valid_number('Cost estimate: $', )
             project_percentage = get_valid_percentage('Completion percentage: ')
             new_project = Project(
                 project_name,
@@ -62,9 +65,11 @@ def main():
                 project_percentage
             )
             projects.append(new_project)
+            # Sort
+            # projects.sort()
 
         if menu_choice == 'u':
-            # Update current projects
+            # Update current projects, modification involved
             for index, project in enumerate(projects):
                 # Display projects with index
                 print(index, project)
@@ -81,6 +86,9 @@ def main():
             # Apply changes when inputs are detected
             chosen_project.update_completion_percentage(new_percentage)
             chosen_project.update_priority(new_priority)
+            # Sort project
+            # projects.sort()
+
         # Loop restarts
         print(MENU)
         menu_choice = input('>>> ').strip().lower()
@@ -134,6 +142,9 @@ def get_valid_date(prompt):
             print('Invalid date. Try again.')
     return date
 
+
+def sort_by_date(project):
+    return project.start_date
 
 def get_valid_text(prompt):
     """Return text in proper format."""
@@ -219,7 +230,7 @@ def load_projects(filename):
             completion_percentage = int(parts[4])
             project = Project(project_name, start_date, priority, cost_estimate, completion_percentage)
             projects.append(project)
-        projects.sort()
+        # projects.sort()
     return projects
 
 
