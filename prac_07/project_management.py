@@ -22,11 +22,13 @@ def main():
             # Load projects
             filename = get_valid_text('Enter a filename to read the projects: ')
             projects = load_projects(filename)
+
         if menu_choice == 's':
             # Save projects
             filename_for_saving = get_valid_text('Enter a filename to save the projects: ')
             save_projects(projects, filename_for_saving)
             print(f'Project saved as {filename_for_saving} successfully!')
+
         if menu_choice == 'd':
             # Display projects
             categorized_projects = categorize_projects(projects)
@@ -43,6 +45,7 @@ def main():
             filtered_projects = [project for project in projects if project.start_date > date_for_filtering]
             for i in filtered_projects:
                 print(i)
+
         if menu_choice == 'a':
             # Add projects
             print("Let's add a new project")
@@ -78,7 +81,7 @@ def main():
             # Apply changes when inputs are detected
             chosen_project.update_completion_percentage(new_percentage)
             chosen_project.update_priority(new_priority)
-
+        # Loop restarts
         print(MENU)
         menu_choice = input('>>> ').strip().lower()
     # Quit
