@@ -26,6 +26,10 @@ class Project:
         if new_priority is not None:
             self.completion_percentage = new_priority
 
+    def __lt__(self, other):
+        """Compare two projects based on their priority"""
+        return self.priority < other.priority
+
     def __repr__(self):
         """Simple representation of the project"""
         return f'{self} - {self.name} - {self.start_date}'
