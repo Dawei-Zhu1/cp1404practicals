@@ -24,7 +24,7 @@ class Project:
     def update_priority(self, new_priority):
         """Update priority when having input"""
         if new_priority is not None:
-            self.completion_percentage = new_priority
+            self.priority = new_priority
 
     def __lt__(self, other):
         """Compare two projects based on their priority"""
