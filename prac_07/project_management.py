@@ -92,6 +92,22 @@ def categorize_projects(projects):
     return [incomplete_projects, completed_projects]
 
 
+def format_date(date_string):
+    """
+    Format the string to date
+    :param date_string: string with format dd/mm/yyyy
+    :return: a Date instant or None if is invalid
+    """
+    date_parts = date_string.split('/')
+    if len(date_parts) == 3:
+        day, month, year = [int(date_particle) for date_particle in date_parts]
+        date = datetime.date(year, month, day)
+    else:
+        print('Bad date format. Use / for separation.')
+        return None
+    return date
+
+
 def get_valid_date(prompt):
     """Return valid date format."""
     date = None
@@ -99,17 +115,12 @@ def get_valid_date(prompt):
     while not is_valid:
         try:
             date = get_valid_text(prompt)
-            date_parts = date.split('/')
-            if len(date_parts) == 3:
-                day, month, year = [int(date_particle) for date_particle in date_parts]
-                date = datetime.date(year, month, day)
+            date = format_date(date)
+            if date:
                 is_valid = True
-            else:
-                print('Bad date format. Use / for separation.')
         except ValueError:
             print('Invalid date. Try again.')
-
-    return date.strftime('%d/%m/%Y')
+    return date
 
 
 def get_valid_text(prompt):
@@ -190,7 +201,7 @@ def load_projects(filename):
         for line in f:
             parts = line.split('\t')
             project_name = parts[0].strip()
-            start_date = parts[1].strip()
+            start_date = format_date(parts[1].strip())
             priority = int(parts[2])
             cost_estimate = float(parts[3])
             completion_percentage = int(parts[4])
