@@ -249,7 +249,7 @@ def save_projects(data, filename):
         for project in data:
             output = '\t'.join([
                 project.name,
-                project.start_date,
+                project.date_to_string(),
                 str(project.priority),
                 project.date_to_string(),
                 str(project.completion_percentage)
