@@ -31,7 +31,7 @@ def main():
         has_pointer_arithmetic = parts[3] == "Yes"
         year = int(parts[-1])
         # Construct a ProgrammingLanguage object using the elements
-        language = ProgrammingLanguage(name, language_type, reflection, has_pointer_arithmetic,year)
+        language = ProgrammingLanguage(name, language_type, reflection, has_pointer_arithmetic, year)
         # Add the language we've just constructed to the list
         languages.append(language)
     # Close the file as soon as we've finished reading it

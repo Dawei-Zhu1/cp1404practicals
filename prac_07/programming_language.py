@@ -20,14 +20,14 @@ class ProgrammingLanguage:
         """Return a string representation of the programming language."""
         return f'{self.name}, \
 {self.typing} Typing, Reflection={self.reflection}, \
-has_pointer_arithmetic={self.has_pointer} \
+has_pointer_arithmetic={self.has_pointer}, \
 First appeared in {self.year}'
 
     def __repr__(self):
         """Return string representation of a ProgrammingLanguage."""
         return f'{self.name}, \
 {self.typing} Typing, Reflection={self.reflection}, \
-has_pointer_arithmetic={self.has_pointer} \
+has_pointer_arithmetic={self.has_pointer}, \
 First appeared in {self.year}'
 
     def is_dynamic(self):
